@@ -5,7 +5,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .background-video {
@@ -15,16 +15,61 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
 }
 
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.15) 60%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
 
+.content {
+  padding-top: 80px;
+}
 
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 16px 30px;
+  background: transparent;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.5));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.logo-icon:hover {
+  transform: scale(1.1) rotate(-5deg);
+  filter: drop-shadow(0 0 14px rgba(0, 210, 255, 0.8));
 }
 
 .user-info {
@@ -106,9 +151,28 @@
 }
 
 h1 {
-  color: white;
-  font-size: 3rem;
-  margin-bottom: 20px;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin: 0;
+  background: linear-gradient(135deg, #00d2ff 0%, #48e0ff 25%, #ffffff 50%, #48e0ff 75%, #00d2ff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: headingShine 4s ease-in-out infinite;
+  text-shadow: none;
+  filter: drop-shadow(0 0 14px rgba(0, 210, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 210, 255, 0.2));
+  font-family: 'Segoe UI', 'Arial Black', sans-serif;
+  text-transform: uppercase;
+  position: relative;
+  cursor: default;
+}
+
+@keyframes headingShine {
+  0% { background-position: 0% center; }
+  50% { background-position: 200% center; }
+  100% { background-position: 0% center; }
 }
 
 h2 {
@@ -227,6 +291,17 @@ h2 {
   font-weight: 600;
 }
 
+/* Your Ride badge */
+.your-ride-badge {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 .loading-text {
   color: white;
   font-size: 1.2rem;
@@ -301,6 +376,7 @@ h2 {
 .cancel-button:hover {
   background-color: #da190b;
 }
+
 .fade-in {
   animation: fadeInModal 0.3s ease-in forwards;
 }
@@ -308,6 +384,32 @@ h2 {
 .fade-out {
   animation: fadeOutModal 0.3s ease-out forwards;
 }
+
+/* Notification toast styles */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notification-toast {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 0.95rem;
+  animation: slideInRight 0.4s ease-out forwards;
+  max-width: 350px;
+}
+
+/* ========================
+   ANIMATIONS
+   ======================== */
 
 @keyframes fadeIn {
   0% {
@@ -326,6 +428,17 @@ h2 {
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes fadeOutModal {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
   }
 }
 
@@ -348,6 +461,17 @@ h2 {
   100% {
     opacity: 0;
     transform: translateY(-20px);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -400,5 +524,24 @@ p {
   .action-button {
     width: 100%;
     margin-top: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .user-info {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .notification-container {
+    left: 10px;
+    right: 10px;
+  }
+
+  .notification-toast {
+    max-width: 100%;
   }
 }

@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "cd Frontend/ridemate && npm install && npm run build",
+  "outputDirectory": "Frontend/ridemate/build",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

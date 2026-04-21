@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapComponent.css';
@@ -14,13 +14,20 @@ const createCustomIcon = (color = '#2A93D5') => {
   });
 };
 
-const MapComponent = () => {
-  const sourcePosition = [17.6868, 83.2185]; // Visakhapatnam
-  const destinationPosition = [17.3850, 78.4867]; // Hyderabad
+// Default positions (Visakhapatnam and Hyderabad)
+const DEFAULT_SOURCE = [17.6868, 83.2185];
+const DEFAULT_DESTINATION = [17.3850, 78.4867];
 
+const MapComponent = ({ source, destination }) => {
+  const sourcePosition = source || DEFAULT_SOURCE;
+  const destinationPosition = destination || DEFAULT_DESTINATION;
 
   const sourceIcon = createCustomIcon('#2A93D5'); // blue
   const destinationIcon = createCustomIcon('#E63946'); // red
+
+  // Determine labels based on whether using defaults or actual data
+  const sourceLabel = source ? 'Your Location' : 'Visakhapatnam (Default)';
+  const destLabel = destination ? 'Your Destination' : 'Hyderabad (Default)';
 
   useEffect(() => {
     const mapContainer = document.querySelector('.leaflet-container');
@@ -33,26 +40,31 @@ const MapComponent = () => {
     <div className="map-wrapper">
       <div className="map-title">
         <h2>Source & Destination Map</h2>
-        <p>Showing Source and Destination Locations</p>
+        <p>
+          {source || destination
+            ? 'Showing your ride locations'
+            : 'Login to see your personalized route'}
+        </p>
       </div>
 
-      <MapContainer 
-        center={sourcePosition} 
-        zoom={6} 
+      <MapContainer
+        center={sourcePosition}
+        zoom={6}
         zoomControl={false}
         className="custom-map"
+        key={`${sourcePosition[0]}-${destinationPosition[0]}`}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
+
         <ZoomControl position="bottomright" />
-        
+
         <Marker position={sourcePosition} icon={sourceIcon}>
           <Popup className="custom-popup">
             <div className="popup-content">
-              <h3>Source: Visakhapatnam</h3>
+              <h3>Source: {sourceLabel}</h3>
               <p>Starting Point</p>
             </div>
           </Popup>
@@ -61,13 +73,11 @@ const MapComponent = () => {
         <Marker position={destinationPosition} icon={destinationIcon}>
           <Popup className="custom-popup">
             <div className="popup-content">
-              <h3>Destination: Hyderabad</h3>
+              <h3>Destination: {destLabel}</h3>
               <p>Ending Point</p>
             </div>
           </Popup>
         </Marker>
-
-        {/* <Polyline positions={[sourcePosition, destinationPosition]} color="#6C5CE7" weight={4} /> */}
       </MapContainer>
 
       <div className="map-legend">
